@@ -1,10 +1,10 @@
-Golang-Install-For-Linux
+Golang-Install
 ------
 ### 
 
 The latest version of the go language is installed.   
 Support custom versions.
-Support Linux/MacOS. 
+Support Linux/MacOS/FreeBSD.
 
 **Note:** You must be **root** to run this script.
 
