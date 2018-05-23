@@ -8,20 +8,17 @@ Support Linux. to support custom versions.
 **Note:** You must be **root** to run this script.
 
 ## Installation
+###
 ```sh
 curl https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | sh
-OR
-wget -qO- https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | sh
 ```
 
-**Custom version**   
+### Custom version   
 **MY_DIY_GO_VERSION** is a custom golang version, such as：**1.10.1**
 ```sh
 curl -SL https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | bash /dev/stdin MY_DIY_GO_VERSION
-OR
-wget -qO- https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | bash /dev/stdin MY_DIY_GO_VERSION
 ```
-
+### Offline
 Or save the script as a file name **install.sh**   
 Execute the script and install the latest version of the golang.
 ```sh
