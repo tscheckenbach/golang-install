@@ -67,11 +67,11 @@ downloadFile() {
     url="$1"
     destination="$2"
 
-    echo "Fetching $url.."
+    echo "Fetching $url"
     if test -x "$(command -v curl)"; then
-        code=$(curl -s -w '%{http_code}' -L "$url" -o "$destination")
+        code=$(curl -w '%{http_code}' -L "$url" -o "$destination")
     elif test -x "$(command -v wget)"; then
-        code=$(wget -q -O "$destination" --server-response "$url" 2>&1 | awk '/^  HTTP/{print $2}' | tail -1)
+        code=$(wget -O "$destination" --server-response "$url" 2>&1 | awk '/^  HTTP/{print $2}' | tail -1)
     else
         echo "Neither curl nor wget was available to perform http requests."
         exit 1
@@ -83,7 +83,7 @@ downloadFile() {
     fi
 }
 
-# Set Golang Environment
+# Set golang environment
 setEnvironment() {
     profile="$1"
     if [ -z "`grep 'export\sGOROOT' $profile`" ];then
@@ -101,7 +101,7 @@ setEnvironment() {
     fi  
 }
 
-# Printf Version Info
+# Printf version info
 clear
 printf "
 ###############################################################
@@ -127,7 +127,7 @@ if [ -z "$RELEASE_TAG" ]; then
 fi
 echo "Release Tag = $RELEASE_TAG"
 
-# Compare Version
+# Compare version
 compareVersion $RELEASE_TAG
 
 printf "
@@ -143,23 +143,23 @@ BINARY_URL="https://dl.google.com/go/$RELEASE_TAG.$OS-$ARCH.tar.gz"
 DOWNLOAD_FILE="$(mktemp).tar.gz"
 downloadFile "$BINARY_URL" "$DOWNLOAD_FILE"
 
-# Tar File and Move File
+# Tar file and move file
 tar -C /usr/local/ -zxf $DOWNLOAD_FILE && \
-rm $DOWNLOAD_FILE -rf
+rm  -rf $DOWNLOAD_FILE
  
-# Create GOPATH Folder
+# Create GOPATH folder
 mkdir -p /data/go
 
-# Set Environmental for Golang
+# Set environmental for golang
 PROFILE="/etc/profile"
 setEnvironment "$PROFILE"
  
-# Make Env Is Enable
+# Make environmental is enable
 . $PROFILE
 go env
 go version
  
-# Printf Tip
+# Printf tip
 printf "
 ###############################################################
 # Install success, please execute again \e[1;33msource $PROFILE\e[0m

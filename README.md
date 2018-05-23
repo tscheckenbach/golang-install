@@ -30,7 +30,7 @@ $ wget -qO- https://raw.githubusercontent.com/skiy/golang-install/master/install
 ```
 
 ### Offline
-Save the script as a file name **install.sh**  .   
+Save the script as a file name **install.sh** .   
 Execute the script and install the latest version of the golang.
 ```sh
 $ sh go.install.sh
