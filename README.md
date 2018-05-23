@@ -2,25 +2,35 @@ Golang-Install
 ------
 ### 
 
-The latest version of the go language is installed.   
-Support custom versions.   
-Support **Linux/MacOS/FreeBSD**.
+The latest version of the golang is installed.   
+* Support custom versions.   
+* Support **Linux / MacOS / FreeBSD**.
 
-**Note:** You must be **root** to run this script.
+### Note
+* You must be **root** to run this script.
 
 ## Installation
 ###
 ```sh
 $ curl https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | sh
 ```
+or
+```sh
+$ wget -qO- https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | sh
+```
 
 ### Custom version   
-***MY_DIY_GO_VERSION*** is a custom golang version, such as：***1.10.1***
+* ***MY_DIY_GO_VERSION*** is a custom golang version, such as： ***1.10.1***
 ```sh
 $ curl -SL https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | bash /dev/stdin MY_DIY_GO_VERSION
 ```
+or
+```sh
+$ wget -qO- https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | bash /dev/stdin MY_DIY_GO_VERSION
+```
+
 ### Offline
-Or save the script as a file name **install.sh**   
+Save the script as a file name **install.sh**  .   
 Execute the script and install the latest version of the golang.
 ```sh
 $ sh go.install.sh
