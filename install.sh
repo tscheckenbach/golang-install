@@ -1,7 +1,7 @@
 #!/bin/bash
 # Golang-Install-For-Linux
 # Project Home Page:
-# https://github.com/skiy/Golang-Install-For-Linux
+# https://github.com/skiy/golang-install
 #
 # Author: Skiychan <dev@skiy.net>
 # Link: https://www.skiy.net
@@ -26,7 +26,7 @@ initArch() {
 initOS() {
     OS=$(uname | tr '[:upper:]' '[:lower:]')
     case "$OS" in
-#        darwin) OS='darwin';;
+        darwin) OS='darwin';;
         linux) OS='linux';;
         freebsd) OS='freebsd';;
 #        mingw*) OS='windows';;
