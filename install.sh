@@ -1,5 +1,5 @@
 #!/bin/bash
-# Golang-Install-For-Linux
+# Golang-Install
 # Project Home Page:
 # https://github.com/skiy/golang-install
 #
@@ -67,7 +67,7 @@ downloadFile() {
     url="$1"
     destination="$2"
 
-    echo "Fetching $url"
+    echo "Fetching $url ..\n"
     if test -x "$(command -v curl)"; then
         code=$(curl -w '%{http_code}' -L "$url" -o "$destination")
     elif test -x "$(command -v wget)"; then
@@ -104,7 +104,7 @@ setEnvironment() {
 clear
 printf "
 ###############################################################
-###  Golang Install For Linux
+###  Golang Install
 ###  Author Skiychan<dev@skiy.net>
 ###  Link https://www.skiy.net 
 ###############################################################
