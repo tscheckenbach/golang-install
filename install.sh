@@ -93,8 +93,7 @@ setEnvironment() {
         echo "export GOPATH=/data/go" >> $profile
     fi
     if [ -z "`grep 'export\sGOBIN' $profile`" ];then
-        echo "gopath:$GOPATH"
-        echo "export GOBIN=$GOPATH/bin" >> $profile
+        echo "export GOBIN=/data/go/bin" >> $profile
     fi   
     if [ -z "`grep '\$GOROOT/bin:\$GOBIN' $profile`" ];then
         echo "export PATH=\$GOROOT/bin:\$GOBIN:\$PATH" >> $profile
