@@ -39,7 +39,7 @@ $ sh go.install.sh
 When you add executable permissions, you can customize the version.   
 ```sh
 # add executable
-chmod +x install.sh
+$ chmod +x install.sh
 
 # latest version
 $ ./install.sh
