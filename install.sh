@@ -13,10 +13,13 @@ RELEASES_URL="https://golang.google.cn/dl/"
 # Get OS bit
 initArch() {
     ARCH=$(uname -m)
+    BIT=ARCH
     case $ARCH in
         amd64) ARCH="amd64";;
         x86_64) ARCH="amd64";;
         i386) ARCH="386";;
+        armv6l) ARCH="armv6l";; 
+        armv7l) ARCH="armv6l";; 
         *) echo -e "\033[1;31mArchitecture ${ARCH} is not supported by this installation script\033[0m"; exit 1;;
     esac
     echo "ARCH = $ARCH"
@@ -136,7 +139,7 @@ printf "
 ###  Bit: %s 
 ###  Version: %s 
 ###############################################################
-\n" $OS $ARCH $RELEASE_TAG
+\n" $OS $BIT $RELEASE_TAG
 
 # Download File
 BINARY_URL="https://dl.google.com/go/$RELEASE_TAG.$OS-$ARCH.tar.gz"
