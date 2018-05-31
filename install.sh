@@ -72,9 +72,9 @@ downloadFile() {
 
     echo -e "Fetching $url.. \n"
     if test -x "$(command -v curl)"; then
-        code=$(curl -w '%{http_code}' -L "$url" -o "$destination")
+        code=$(curl -s -w '%{http_code}' -L "$url" -o "$destination")
     elif test -x "$(command -v wget)"; then
-        code=$(wget -O "$destination" --server-response "$url" 2>&1 | awk '/^  HTTP/{print $2}' | tail -1)
+        code=$(wget -q -O "$destination" --server-response "$url" 2>&1 | awk '/^  HTTP/{print $2}' | tail -1)
     else
         echo "Neither curl nor wget was available to perform http requests."
         exit 1
