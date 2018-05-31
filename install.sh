@@ -13,7 +13,7 @@ RELEASES_URL="https://golang.google.cn/dl/"
 # Get OS bit
 initArch() {
     ARCH=$(uname -m)
-    BIT=ARCH
+    BIT=$ARCH
     case $ARCH in
         amd64) ARCH="amd64";;
         x86_64) ARCH="amd64";;
