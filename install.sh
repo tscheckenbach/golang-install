@@ -157,7 +157,7 @@ PROFILE="/etc/profile"
 setEnvironment "$PROFILE"
  
 # Make environmental is enable
-. $PROFILE
+source $PROFILE
 go env
 go version
  
