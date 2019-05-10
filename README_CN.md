@@ -12,21 +12,21 @@ Go 语言安装
 ## 安装
 ###
 ```sh
-$ curl https://github.com/skiy/golang-install/raw/master/install.sh | sh
+$ curl https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | sh
 ```
 or
 ```sh
-$ wget -qO- https://github.com/skiy/golang-install/raw/master/install.sh | sh
+$ wget -qO- https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | sh
 ```
 
 ### 自定义版本   
 * ***MY_DIY_GO_VERSION*** 是自定义版本号, 例如： ***1.10.1***
 ```sh
-$ curl -SL https://github.com/skiy/golang-install/raw/master/install.sh | sh /dev/stdin MY_DIY_GO_VERSION
+$ curl -SL https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | sh /dev/stdin MY_DIY_GO_VERSION
 ```
 or
 ```sh
-$ wget -qO- https://github.com/skiy/golang-install/raw/master/install.sh | sh /dev/stdin MY_DIY_GO_VERSION
+$ wget -qO- https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | sh /dev/stdin MY_DIY_GO_VERSION
 ```
 
 ### 离线执行
