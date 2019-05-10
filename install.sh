@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/sh
+
 # Golang-Install
 # Project Home Page:
 # https://github.com/skiy/golang-install
@@ -7,6 +8,8 @@
 # Link: https://www.skiy.net
 
 set -e
+
+E=""
 
 RELEASES_URL="https://golang.google.cn/dl/"
 
@@ -20,7 +23,7 @@ initArch() {
         i386) ARCH="386";;
         armv6l) ARCH="armv6l";; 
         armv7l) ARCH="armv6l";; 
-        *) echo -e "\033[1;31mArchitecture ${ARCH} is not supported by this installation script\033[0m"; exit 1;;
+        *) echo ${E} "\e[1;31mArchitecture ${ARCH} is not supported by this installation script\e[0m"; exit 1;;
     esac
     echo "ARCH = $ARCH"
 }
@@ -34,7 +37,7 @@ initOS() {
         freebsd) OS='freebsd';;
 #        mingw*) OS='windows';;
 #        msys*) OS='windows';;
-        *) echo -e "\033[1;31mOS ${OS} is not supported by this installation script\033[0m"; exit 1;;
+        *) echo ${E} "\e[1;31mOS ${OS} is not supported by this installation script\e[0m"; exit 1;;
     esac
     echo "OS = $OS"
 }
@@ -47,12 +50,12 @@ compareVersion() {
         OLD_VERSION="$(go version | awk '{print $3}')"
     fi
     if [ "$OLD_VERSION" = "$NEW_VERSION" ]; then
-       echo -e "\033[1;31mYou have installed this version: $OLD_VERSION\033[0m"; exit 1;
+       echo ${E} "\n\e[1;31mYou have installed this version: $OLD_VERSION\e[0m"; exit 1;
     fi
 
 printf "
-Current version: \033[1;33m$OLD_VERSION\033[0m 
-Target version: \033[1;33m$NEW_VERSION\033[0m
+Current version: \e[1;33m$OLD_VERSION\e[0m 
+Target version: \e[1;33m$NEW_VERSION\e[0m
 "
 }
 
@@ -61,7 +64,7 @@ checkRoot() {
     ROOT=$(id -u)
     case "$ROOT" in
         0) ROOT='root';;
-        *) echo -e "\033[1;31mError: You must be root to run this script\033[0m"; exit 1;;
+        *) echo ${E} "\e[1;31mError: You must be root to run this script\e[0m"; exit 1;;
     esac
 }
 
@@ -70,11 +73,11 @@ downloadFile() {
     url="$1"
     destination="$2"
 
-    echo -e "Fetching $url.. \n"
+    echo "Fetching $url \n"
     if test -x "$(command -v curl)"; then
-        code=$(curl -s -w '%{http_code}' -L "$url" -o "$destination")
+        code=$(curl --connect-timeout 15 -w '%{http_code}' -L "$url" -o "$destination")
     elif test -x "$(command -v wget)"; then
-        code=$(wget -q -O "$destination" --server-response "$url" 2>&1 | awk '/^  HTTP/{print $2}' | tail -1)
+        code=$(wget -t2 -T15 -O "$destination" --server-response "$url" 2>&1 | awk '/^  HTTP/{print $2}' | tail -1)
     else
         echo "Neither curl nor wget was available to perform http requests."
         exit 1
@@ -83,6 +86,8 @@ downloadFile() {
     if [ "$code" != 200 ]; then
         echo "Request failed with code $code"
         exit 1
+    else 
+	echo ${E}"\n\e[1;33mDownload succeeded\e[0m\n"
     fi
 }
 
@@ -147,7 +152,7 @@ downloadFile "$BINARY_URL" "$DOWNLOAD_FILE"
 
 # Tar file and move file
 tar -C /usr/local/ -zxf $DOWNLOAD_FILE && \
-rm  -rf $DOWNLOAD_FILE
+rm -rf $DOWNLOAD_FILE
  
 # Create GOPATH folder
 mkdir -p /data/go
@@ -157,7 +162,8 @@ PROFILE="/etc/profile"
 setEnvironment "$PROFILE"
  
 # Make environmental is enable
-source $PROFILE
+. $PROFILE
+
 go env
 go version
  

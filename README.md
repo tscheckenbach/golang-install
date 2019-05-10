@@ -33,7 +33,7 @@ $ wget -qO- https://raw.githubusercontent.com/skiy/golang-install/master/install
 Save the script as a file name **install.sh** .   
 Execute the script and install the latest version of the golang.
 ```sh
-$ sh go.install.sh
+$ sh install.sh
 ```
   
 When you add executable permissions, you can customize the version.   

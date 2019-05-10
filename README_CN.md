@@ -33,7 +33,7 @@ $ wget -qO- https://gitee.com/skiy/golang-install/raw/master/install.sh | bash /
 保存脚本并且命名为 **install.sh** 。   
 执行脚本安装最新版 Go 语言。
 ```sh
-$ sh go.install.sh
+$ sh install.sh
 ```
   
 如果你给脚本可执行权限，那么同时可以自定义 Go 语言版本。  
