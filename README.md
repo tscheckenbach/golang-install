@@ -22,18 +22,21 @@ $ wget -qO- https://raw.githubusercontent.com/skiy/golang-install/master/install
 ### Custom version   
 * ***MY_DIY_GO_VERSION*** is a custom golang version, such as： ***1.10.1***
 ```sh
-$ curl -SL https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | bash /dev/stdin MY_DIY_GO_VERSION
+$ curl -SL https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | sh /dev/stdin MY_DIY_GO_VERSION
 ```
 or
 ```sh
-$ wget -qO- https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | bash /dev/stdin MY_DIY_GO_VERSION
+$ wget -qO- https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | sh /dev/stdin MY_DIY_GO_VERSION
 ```
 
 ### Offline
 Save the script as a file name **install.sh** .   
 Execute the script and install the latest version of the golang.
 ```sh
-$ sh install.sh
+$ sh install.sh   
+   
+# customize version   
+$ sh install.sh 1.9.2   
 ```
   
 When you add executable permissions, you can customize the version.   

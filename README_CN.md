@@ -12,21 +12,21 @@ Go 语言安装
 ## 安装
 ###
 ```sh
-$ curl https://gitee.com/skiy/golang-install/raw/master/install.sh | sh
+$ curl https://github.com/skiy/golang-install/raw/master/install.sh | sh
 ```
 or
 ```sh
-$ wget -qO- https://gitee.com/skiy/golang-install/raw/master/install.sh | sh
+$ wget -qO- https://github.com/skiy/golang-install/raw/master/install.sh | sh
 ```
 
 ### 自定义版本   
 * ***MY_DIY_GO_VERSION*** 是自定义版本号, 例如： ***1.10.1***
 ```sh
-$ curl -SL https://gitee.com/skiy/golang-install/raw/master/install.sh | bash /dev/stdin MY_DIY_GO_VERSION
+$ curl -SL https://github.com/skiy/golang-install/raw/master/install.sh | sh /dev/stdin MY_DIY_GO_VERSION
 ```
 or
 ```sh
-$ wget -qO- https://gitee.com/skiy/golang-install/raw/master/install.sh | bash /dev/stdin MY_DIY_GO_VERSION
+$ wget -qO- https://github.com/skiy/golang-install/raw/master/install.sh | sh /dev/stdin MY_DIY_GO_VERSION
 ```
 
 ### 离线执行
@@ -34,12 +34,15 @@ $ wget -qO- https://gitee.com/skiy/golang-install/raw/master/install.sh | bash /
 执行脚本安装最新版 Go 语言。
 ```sh
 $ sh install.sh
+
+# 自定义版本   
+$ sh install.sh 1.9.2   
 ```
   
 如果你给脚本可执行权限，那么同时可以自定义 Go 语言版本。  
 ```sh
 # 添加可执行权限
-$ chmod +x install.sh
+$ chmod +x install.sh   
 
 # 最新版
 $ ./install.sh
