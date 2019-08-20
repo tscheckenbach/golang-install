@@ -16,8 +16,7 @@ SCRIPT_NAME=$0
 RELEASE_URL="https://golang.google.cn/dl/"
 
 # Downlaod link
-# DOWNLOAD_URL="https://dl.google.com/go/"
-DOWNLOAD_URL="http://127.0.0.1/"
+DOWNLOAD_URL="https://dl.google.com/go/"
 
 # Set environmental for golang
 PROFILE="/etc/profile"
@@ -245,10 +244,6 @@ initOS
 installCURLCommand
 
 latestVersion
-
-# printf "version: %s\n" $RELEASE_TAG 
-# printf "gopath: %s\n" $GO_PATH
-# exit 1
 
 showSystemInformation
 
