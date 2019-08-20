@@ -3,52 +3,48 @@ Golang-Install
 ### 
 
 The latest version of the golang is installed.   
-* Support custom versions.   
-* Support **Linux / MacOS / FreeBSD**.
+- Support custom versions.   
+- Support **Linux / MacOS / FreeBSD**.
 
-### Note
-* You must be **root** to run this script.
+### Notice
+- You must be **root** to run this script.
+- By default, the latest version of **go version** is installed, and the **GOPATH** directory is ```/data/go```
 
 ## Installation
 ###
 ```sh
 $ curl https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | sh
 ```
-or
-```sh
-$ wget -qO- https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | sh
-```
 
 ### Custom version   
-* ***MY_DIY_GO_VERSION*** is a custom golang version, such as： ***1.10.1***
+- **MY_DIY_GO_VERSION** is a custom golang version, such as： ```1.12.8```
+- **MY_DIY_GO_PATH** is a custom gopath, such as： ```/home/myhome/go```
+
 ```sh
-$ curl -SL https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | sh /dev/stdin MY_DIY_GO_VERSION
-```
-or
-```sh
-$ wget -qO- https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | sh /dev/stdin MY_DIY_GO_VERSION
+$ curl -SL https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | sh /dev/stdin -v MY_DIY_GO_VERSION -d MY_DIY_GO_PATH
 ```
 
 ### Offline
-Save the script as a file name **install.sh** .   
-Execute the script and install the latest version of the golang.
+Save the script as a file name **install.sh**    
+
 ```sh
+# default install
 $ sh install.sh   
    
-# customize version   
-$ sh install.sh 1.9.2   
+# customize  
+$ sh install.sh -v 1.12.8 -d /home/myhome/go 
 ```
   
-When you add executable permissions, you can customize the version.   
+When you add executable permissions, you can customize the version and gopath.   
 ```sh
 # add executable
 $ chmod +x install.sh
 
-# latest version
+# default install
 $ ./install.sh
 
-# customize version
-$ ./install.sh 1.9.2
+# customize 
+$ ./install.sh -v 1.12.8 -d /home/myhome/go
 ```
 
 ### Author

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Golang-Install
 # Project Home Page:
@@ -9,9 +9,30 @@
 
 set -e
 
-E=""
+# Script file name
+SCRIPT_NAME=$0
 
-RELEASES_URL="https://golang.google.cn/dl/"
+# Release link
+RELEASE_URL="https://golang.google.cn/dl/"
+
+# Downlaod link
+# DOWNLOAD_URL="https://dl.google.com/go/"
+DOWNLOAD_URL="http://127.0.0.1/"
+
+# Set environmental for golang
+PROFILE="/etc/profile"
+
+# Set GOPATH PATH
+GO_PATH="/data/go"
+
+# Check if user is root
+checkRoot() {
+    ROOT=$(id -u)
+    case $ROOT in
+        0) ROOT='root';;
+        *) printf "\e[1;31mError: You must be root to run this script\e[0m\n"; exit 1;;
+    esac
+}
 
 # Get OS bit
 initArch() {
@@ -23,120 +44,160 @@ initArch() {
         i386) ARCH="386";;
         armv6l) ARCH="armv6l";; 
         armv7l) ARCH="armv6l";; 
-        *) echo ${E} "\e[1;31mArchitecture ${ARCH} is not supported by this installation script\e[0m"; exit 1;;
+        *) printf "\e[1;31mArchitecture %s is not supported by this installation script\e[0m\n" $ARCH; exit 1;;
     esac
-    echo "ARCH = $ARCH"
+    echo "ARCH = ${ARCH}"
 }
 
 # Get OS version
 initOS() {
     OS=$(uname | tr '[:upper:]' '[:lower:]')
-    case "$OS" in
+    case $OS in
         darwin) OS='darwin';;
         linux) OS='linux';;
         freebsd) OS='freebsd';;
 #        mingw*) OS='windows';;
 #        msys*) OS='windows';;
-        *) echo ${E} "\e[1;31mOS ${OS} is not supported by this installation script\e[0m"; exit 1;;
+        *) printf "\e[1;31mOS %s is not supported by this installation script\e[0m\n" $OS; exit 1;;
     esac
-    echo "OS = $OS"
+    echo "OS = ${OS}"
+}
+
+initArgs() {
+    key=""
+
+    for arg in "$@" 
+    do
+        if test "-h" = $arg; then
+            showHelpMessage
+        fi
+
+        if test -z $key; then 
+            key=$arg
+        else 
+            if test "-v" = $key; then
+                customVersion $arg
+            elif test "-d" = $key; then
+                GO_PATH=$arg
+                createGOPATHFolder
+            fi
+
+            key=""
+        fi
+    done
+}
+
+# DIY version
+customVersion() {
+    if [ -n "${1}" ] ;then
+        RELEASE_TAG="go${1}"
+        echo "Custom Version = ${RELEASE_TAG}"
+    fi
+}
+
+# if RELEASE_TAG was not provided, assume latest
+latestVersion() {
+    if [ -z "${RELEASE_TAG}" ]; then
+        RELEASE_TAG="$(curl -sL ${RELEASE_URL} | sed -n '/toggleVisible/p' | head -n 1 | cut -d '"' -f 4)"
+        echo "Latest Version = ${RELEASE_TAG}"
+    fi
 }
 
 # Compare Version
 compareVersion() {
     OLD_VERSION="none"
-    NEW_VERSION="$1"
+    NEW_VERSION="${1}"
     if test -x "$(command -v go)"; then
         OLD_VERSION="$(go version | awk '{print $3}')"
     fi
     if [ "$OLD_VERSION" = "$NEW_VERSION" ]; then
-       echo ${E} "\n\e[1;31mYou have installed this version: $OLD_VERSION\e[0m"; exit 1;
+       printf "\n\e[1;31mYou have installed this version: %s\e[0m\n" $OLD_VERSION; exit 1;
     fi
 
 printf "
-Current version: \e[1;33m$OLD_VERSION\e[0m 
-Target version: \e[1;33m$NEW_VERSION\e[0m
-"
+Current version: \e[1;33m %s \e[0m 
+Target version: \e[1;33m %s \e[0m
+" $OLD_VERSION $NEW_VERSION
 }
 
-# Check if user is root
-checkRoot() {
-    ROOT=$(id -u)
-    case "$ROOT" in
-        0) ROOT='root';;
-        *) echo ${E} "\e[1;31mError: You must be root to run this script\e[0m"; exit 1;;
-    esac
+# Install curl command
+installCURLCommand() {
+    if !(test -x "$(command -v curl)"); then
+        if test -x "$(command -v yum)"; then
+            yum install -y curl
+        elif test -x "$(command -v apt)"; then
+            apt install -y curl
+        else 
+            printf "\e[1;31mYou must pre-install the curl tool\e[0m\n"
+            exit 1
+        fi
+    fi  
 }
 
 # Download go file
 downloadFile() {
-    url="$1"
-    destination="$2"
+    url="${1}"
+    destination="${2}"
 
-    echo "Fetching $url \n"
+    printf "Fetching ${url} \n\n"
+
     if test -x "$(command -v curl)"; then
-        code=$(curl --connect-timeout 15 -w '%{http_code}' -L "$url" -o "$destination")
+        code=$(curl --connect-timeout 15 -w '%{http_code}' -L "${url}" -o "${destination}")
     elif test -x "$(command -v wget)"; then
-        code=$(wget -t2 -T15 -O "$destination" --server-response "$url" 2>&1 | awk '/^  HTTP/{print $2}' | tail -1)
+        code=$(wget -t2 -T15 -O "${destination}" --server-response "${url}" 2>&1 | awk '/^  HTTP/{print $2}' | tail -1)
     else
-        echo "Neither curl nor wget was available to perform http requests."
+        printf "\e[1;31mNeither curl nor wget was available to perform http requests.\e[0m\n"
         exit 1
     fi
 
-    if [ "$code" != 200 ]; then
-        echo "Request failed with code $code"
+    if [ "${code}" != 200 ]; then
+        printf "\e[1;31mRequest failed with code %s\e[0m\n" $code
         exit 1
     else 
-	echo ${E}"\n\e[1;33mDownload succeeded\e[0m\n"
+	    printf "\n\e[1;33mDownload succeeded\e[0m\n"
     fi
 }
 
 # Set golang environment
 setEnvironment() {
-    profile="$1"
-    if [ -z "`grep 'export\sGOROOT' $profile`" ];then
+    profile="${1}"
+    if [ -z "`grep 'export\sGOROOT' ${profile}`" ];then
+        echo -e "\n## GOLANG" >> $profile
         echo "export GOROOT=/usr/local/go" >> $profile
     fi
-    if [ -z "`grep 'export\sGOPATH' $profile`" ];then
-        echo "export GOPATH=/data/go" >> $profile
+    if [ -z "`grep 'export\sGOPATH' ${profile}`" ];then
+        echo "export GOPATH=${GO_PATH}" >> $profile
     fi
-    if [ -z "`grep 'export\sGOBIN' $profile`" ];then
-        echo "export GOBIN=/data/go/bin" >> $profile
+    if [ -z "`grep 'export\sGOBIN' ${profile}`" ];then
+        echo "export GOBIN=\$GOPATH/bin" >> $profile
     fi   
-    if [ -z "`grep '\$GOROOT/bin:\$GOBIN' $profile`" ];then
+    if [ -z "`grep '\$GOROOT/bin:\$GOBIN' ${profile}`" ];then
         echo "export PATH=\$GOROOT/bin:\$GOBIN:\$PATH" >> $profile
     fi  
 }
 
-# Printf version info
-clear
+# Create GOPATH folder
+createGOPATHFolder() {
+    mkdir -p $GO_PATH
+}
+
+# Show copyright
+showCopyright() {
+    clear
+
 printf "
 ###############################################################
 ###  Golang Install
-###  Author Skiychan<dev@skiy.net>
-###  Link https://www.skiy.net 
+###
+###  Author:  Skiychan<dev@skiy.net>
+###  Link:    https://www.skiy.net 
+###  Project: https://github.com/skiy/golang-install
 ###############################################################
 \n"
+}
 
-# identify platform based on uname output
-checkRoot
-initArch
-initOS
-
-# DIY version
-if [ -n "$1" ] ;then
-    RELEASE_TAG="go$1"
-fi
-
-# if RELEASE_TAG was not provided, assume latest
-if [ -z "$RELEASE_TAG" ]; then
-    RELEASE_TAG="$(curl -sL $RELEASES_URL | sed -n '/toggleVisible/p' | head -n 1 | cut -d '"' -f 4)"
-fi
-echo "Release Tag = $RELEASE_TAG"
-
-# Compare version
-compareVersion $RELEASE_TAG
-
+# Show system information
+showSystemInformation() {
 printf "
 ###############################################################
 ###  System: %s 
@@ -144,22 +205,63 @@ printf "
 ###  Version: %s 
 ###############################################################
 \n" $OS $BIT $RELEASE_TAG
+}
+
+# Show success message
+showSuccessMessage() {
+printf "
+###############################################################
+# Install success, please execute again \e[1;33msource %s\e[0m
+###############################################################
+\n" $PROFILE
+}
+
+# Show help message
+showHelpMessage() {
+printf "
+Go install
+
+Usage: %s [-h] [-v version] [-d gopath]
+
+Options:
+  -h            : this help
+  -v            : set go version (default: latest version)
+  -d            : set go path (default: /data/go)
+\n" $SCRIPT_NAME
+exit 1
+}
+
+# identify platform based on uname output
+initArgs $@
+
+showCopyright
+
+checkRoot
+
+initArch
+
+initOS
+
+installCURLCommand
+
+latestVersion
+
+# printf "version: %s\n" $RELEASE_TAG 
+# printf "gopath: %s\n" $GO_PATH
+# exit 1
+
+showSystemInformation
 
 # Download File
-BINARY_URL="https://dl.google.com/go/$RELEASE_TAG.$OS-$ARCH.tar.gz"
+BINARY_URL="${DOWNLOAD_URL}${RELEASE_TAG}.${OS}-${ARCH}.tar.gz"
 DOWNLOAD_FILE="$(mktemp).tar.gz"
-downloadFile "$BINARY_URL" "$DOWNLOAD_FILE"
+downloadFile $BINARY_URL $DOWNLOAD_FILE
 
 # Tar file and move file
 tar -C /usr/local/ -zxf $DOWNLOAD_FILE && \
 rm -rf $DOWNLOAD_FILE
  
-# Create GOPATH folder
-mkdir -p /data/go
-
-# Set environmental for golang
-PROFILE="/etc/profile"
-setEnvironment "$PROFILE"
+setEnvironment $PROFILE
  
 # Make environmental is enable
 . $PROFILE
@@ -167,9 +269,4 @@ setEnvironment "$PROFILE"
 go env
 go version
  
-# Printf tip
-printf "
-###############################################################
-# Install success, please execute again \e[1;33msource $PROFILE\e[0m
-###############################################################
-"
+showSuccessMessage
