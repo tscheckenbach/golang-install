@@ -105,7 +105,7 @@ latestVersion() {
 # Compare Version
 compareVersion() {
     OLD_VERSION="none"
-    NEW_VERSION="${1}"
+    NEW_VERSION="${RELEASE_TAG}"
     if test -x "$(command -v go)"; then
         OLD_VERSION="$(go version | awk '{print $3}')"
     fi
@@ -244,6 +244,8 @@ initOS
 installCURLCommand
 
 latestVersion
+
+compareVersion
 
 showSystemInformation
 
