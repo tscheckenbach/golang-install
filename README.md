@@ -7,7 +7,7 @@ The latest version of the golang is installed.
    
 English | [简体中文](./README_CN.md)
 
-## Notice
+#### Notice
 - You must be **root** to run this script.
 - By default, the latest version of **go version** is installed, and the **GOPATH** directory is ```/data/go```
 
@@ -49,8 +49,8 @@ $ ./install.sh
 $ ./install.sh -v 1.12.8 -d /home/myhome/go
 ```
 
-**Help**   
-****./install.sh -h**
+**Usage**    
+./install.sh -h
 ```
 Go install
 
