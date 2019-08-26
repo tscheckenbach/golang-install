@@ -1,16 +1,15 @@
 Go 语言安装
 ------
-## 
-
 最新版 Go 语言一键安装脚本。 
-- 支持自定义版本。   
-- 支持 **Linux / MacOS / FreeBSD** 等系统。
+- 支持 **Linux / MacOS / FreeBSD** 等系统
+- 支持自定义**版本**
+- 支持自定义**GOPATH**
+
+[English](./README.md) | 简体中文
 
 ## 注意
 - 必须在 **root** 用户下执行脚本。
 - 默认安装最新版本的 **go version**, **GOPATH** 目录为 ```/data/go```
-
-[English](./README.md) | 简体中文
 
 ## 安装
 ### 在线安装
@@ -51,7 +50,17 @@ $ ./install.sh -v 1.12.8 -d /home/myhome/go
 ```
 
 **帮助说明**   
-```./install.sh -h```
+**./install.sh -h**
+```
+Go install
+
+Usage: ./install.sh [-h] [-v version] [-d gopath]
+
+Options:
+  -h            : this help
+  -v            : set go version (default: latest version)
+  -d            : set go path (default: /data/go)
+```
 
 ## 作者
 Author: Skiychan   

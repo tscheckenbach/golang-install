@@ -1,16 +1,15 @@
 Golang-Install
 ------
-## 
-
 The latest version of the golang is installed.   
-- Support custom versions.   
-- Support **Linux / MacOS / FreeBSD**.
+- Support **Linux / MacOS / FreeBSD**
+- Support custom **version**  
+- Support custom **GOPATH** 
+   
+English | [简体中文](./README_CN.md)
 
 ## Notice
 - You must be **root** to run this script.
 - By default, the latest version of **go version** is installed, and the **GOPATH** directory is ```/data/go```
-
-English | [简体中文](./README_CN.md)
 
 ## Installation
 ### Online
@@ -51,7 +50,17 @@ $ ./install.sh -v 1.12.8 -d /home/myhome/go
 ```
 
 **Help**   
-```./install.sh -h```
+****./install.sh -h**
+```
+Go install
+
+Usage: ./install.sh [-h] [-v version] [-d gopath]
+
+Options:
+  -h            : this help
+  -v            : set go version (default: latest version)
+  -d            : set go path (default: /data/go)
+```
 
 ## Author
 Author: Skiychan   
