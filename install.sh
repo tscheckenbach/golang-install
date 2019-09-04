@@ -16,7 +16,8 @@ SCRIPT_NAME=$0
 RELEASE_URL="https://golang.google.cn/dl/"
 
 # Downlaod link
-DOWNLOAD_URL="https://dl.google.com/go/"
+# DOWNLOAD_URL="https://dl.google.com/go/"
+DOWNLOAD_URL="http://127.0.0.1/"
 
 # Set environmental for golang
 PROFILE="/etc/profile"
@@ -102,7 +103,7 @@ latestVersion() {
     fi
 }
 
-# Compare Version
+# Compare version
 compareVersion() {
     OLD_VERSION="none"
     NEW_VERSION="${RELEASE_TAG}"
@@ -118,6 +119,9 @@ Current version: \e[1;33m %s \e[0m
 Target version: \e[1;33m %s \e[0m
 " $OLD_VERSION $NEW_VERSION
 }
+
+# Compare version size 
+versionGE() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 
 # Install curl command
 installCURLCommand() {
@@ -170,9 +174,16 @@ setEnvironment() {
     if [ -z "`grep 'export\sGOBIN' ${profile}`" ];then
         echo "export GOBIN=\$GOPATH/bin" >> $profile
     fi   
-    if [ -z "`grep '\$GOROOT/bin:\$GOBIN' ${profile}`" ];then
-        echo "export PATH=\$GOROOT/bin:\$GOBIN:\$PATH" >> $profile
+    if [ -z "`grep 'export\sGOPROXY' ${profile}`" ];then
+        GOPROXY_TEXT="https://proxy.golang.org,https://goproxy.cn,https://goproxy.io"
+        if versionGE $RELEASE_TAG "go1.13"; then
+            GOPROXY_TEXT="direct,${GOPROXY_TEXT}"
+        fi
+        echo "export GOPROXY=${GOPROXY_TEXT}" >> $profile
     fi  
+    if [ -z "`grep 'export\sGOBIN' ${profile}`" ];then
+        echo "export GOBIN=\$GOPATH/bin" >> $profile
+    fi     
 }
 
 # Create GOPATH folder
@@ -255,6 +266,7 @@ DOWNLOAD_FILE="$(mktemp).tar.gz"
 downloadFile $BINARY_URL $DOWNLOAD_FILE
 
 # Tar file and move file
+rm -rf /usr/local/go
 tar -C /usr/local/ -zxf $DOWNLOAD_FILE && \
 rm -rf $DOWNLOAD_FILE
  
