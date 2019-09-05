@@ -16,8 +16,8 @@ SCRIPT_NAME=$0
 RELEASE_URL="https://golang.google.cn/dl/"
 
 # Downlaod link
-# DOWNLOAD_URL="https://dl.google.com/go/"
-DOWNLOAD_URL="http://127.0.0.1/"
+DOWNLOAD_URL="https://dl.google.com/go/"
+# DOWNLOAD_URL="http://127.0.0.1/"
 
 # Set environmental for golang
 PROFILE="/etc/profile"
