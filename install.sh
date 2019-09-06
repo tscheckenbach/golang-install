@@ -7,23 +7,27 @@
 # Author: Skiychan <dev@skiy.net>
 # Link: https://www.skiy.net
 
-set -e
-
 # Script file name
 SCRIPT_NAME=$0
 
 # Release link
-RELEASE_URL="https://golang.google.cn/dl/"
+RELEASE_URL="https://golang.org/dl/"
 
 # Downlaod link
 DOWNLOAD_URL="https://dl.google.com/go/"
 # DOWNLOAD_URL="http://127.0.0.1/"
+
+# GOPROXY
+GOPROXY_TEXT="https://proxy.golang.org,https://athens.azurefd.net"
 
 # Set environmental for golang
 PROFILE="/etc/profile"
 
 # Set GOPATH PATH
 GO_PATH="/data/go"
+
+# Is GWF
+IN_CHINA=0
 
 # Check if user is root
 checkRoot() {
@@ -32,6 +36,16 @@ checkRoot() {
         0) ROOT='root';;
         *) printf "\e[1;31mError: You must be root to run this script\e[0m\n"; exit 1;;
     esac
+}
+
+# Chenck GWF
+checkGWF() {
+    urlstatus=$(curl -s -m 5 -IL $RELEASE_URL | grep 200)
+    if [ "$urlstatus" == "" ]; then
+        IN_CHINA=1
+        RELEASE_URL="https://golang.google.cn/dl/"
+        GOPROXY_TEXT="https://goproxy.cn,https://goproxy.io"   
+    fi
 }
 
 # Get OS bit
@@ -168,22 +182,31 @@ setEnvironment() {
         echo -e "\n## GOLANG" >> $profile
         echo "export GOROOT=/usr/local/go" >> $profile
     fi
+
     if [ -z "`grep 'export\sGOPATH' ${profile}`" ];then
         echo "export GOPATH=${GO_PATH}" >> $profile
     fi
+    
     if [ -z "`grep 'export\sGOBIN' ${profile}`" ];then
         echo "export GOBIN=\$GOPATH/bin" >> $profile
     fi   
+
+    if [ "${IN_CHINA}" == "1" ]; then 
+        if [ -z "`grep 'export\sGOSUMDB' ${profile}`" ];then
+            echo "export GOSUMDB=off" >> $profile
+        fi      
+    fi
+
     if [ -z "`grep 'export\sGOPROXY' ${profile}`" ];then
-        GOPROXY_TEXT="https://proxy.golang.org,https://goproxy.cn,https://goproxy.io"
         if versionGE $RELEASE_TAG "go1.13"; then
             GOPROXY_TEXT="direct,${GOPROXY_TEXT}"
         fi
         echo "export GOPROXY=${GOPROXY_TEXT}" >> $profile
     fi  
+
     if [ -z "`grep '\$GOROOT/bin:\$GOBIN' ${profile}`" ];then
         echo "export PATH=\$GOROOT/bin:\$GOBIN:\$PATH" >> $profile
-    fi    
+    fi        
 }
 
 # Create GOPATH folder
@@ -247,6 +270,10 @@ initArgs $@
 showCopyright
 
 checkRoot
+
+checkGWF
+
+set -e
 
 initArch
 
