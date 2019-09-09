@@ -199,7 +199,7 @@ setEnvironment() {
 
     if [ -z "`grep 'export\sGOPROXY' ${profile}`" ];then
         if versionGE $RELEASE_TAG "go1.13"; then
-            GOPROXY_TEXT="direct,${GOPROXY_TEXT}"
+            GOPROXY_TEXT="${GOPROXY_TEXT},direct"
         fi
         echo "export GOPROXY=${GOPROXY_TEXT}" >> $profile
     fi  
