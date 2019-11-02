@@ -8,6 +8,7 @@ Go 语言安装
 [English](./README.md) | 简体中文
 
 #### 注意
+- 由于 “raw.githubusercontent.com” 已被墙，故英文版本的地址已失效。
 - 必须在 **root** 用户下执行脚本。
 - 默认安装最新版本的 **go version**, **GOPATH** 目录为 ```/data/go```
 
@@ -15,7 +16,7 @@ Go 语言安装
 ### 在线安装
 #### 默认安装
 ```sh
-$ curl https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | bash
+$ curl https://gitea.com/skiy/golang-install/raw/branch/master/install.sh | bash
 ```
 
 #### 自定义安装
@@ -23,7 +24,7 @@ $ curl https://raw.githubusercontent.com/skiy/golang-install/master/install.sh |
 - **MY_DIY_GO_PATH** 是自定义版本号, 例如： ```/home/myhome/go```
 
 ```sh
-$ curl -SL https://raw.githubusercontent.com/skiy/golang-install/master/install.sh | bash /dev/stdin -v MY_DIY_GO_VERSION -d MY_DIY_GO_PATH
+$ curl -SL https://gitea.com/skiy/golang-install/raw/branch/master/install.sh | bash /dev/stdin -v MY_DIY_GO_VERSION -d MY_DIY_GO_PATH
 ```
 
 ### 离线执行
