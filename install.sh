@@ -298,8 +298,8 @@ DOWNLOAD_FILE="$(mktemp).tar.gz"
 downloadFile $BINARY_URL $DOWNLOAD_FILE
 
 # Tar file and move file
-if [ ! -d "${HOME}/.go" ]; then
-    mkdir -p ${HOME}/.go
+if [ ! -d "${HOME}/.go/path" ]; then
+    mkdir -p ${HOME}/.go/path
 fi
 #rm -rf /usr/local/go
 #tar -C /usr/local/ -zxf $DOWNLOAD_FILE && \
