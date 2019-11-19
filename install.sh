@@ -14,8 +14,8 @@ SCRIPT_NAME=$0
 RELEASE_URL="https://golang.org/dl/"
 
 # Downlaod link
-#DOWNLOAD_URL="https://dl.google.com/go/"
-DOWNLOAD_URL="http://127.0.0.1/"
+DOWNLOAD_URL="https://dl.google.com/go/"
+#DOWNLOAD_URL="http://127.0.0.1/"
 
 # GOPROXY
 GOPROXY_TEXT="https://proxy.golang.org"
