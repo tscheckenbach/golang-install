@@ -14,17 +14,19 @@ SCRIPT_NAME=$0
 RELEASE_URL="https://golang.org/dl/"
 
 # Downlaod link
-DOWNLOAD_URL="https://dl.google.com/go/"
-# DOWNLOAD_URL="http://127.0.0.1/"
+#DOWNLOAD_URL="https://dl.google.com/go/"
+DOWNLOAD_URL="http://127.0.0.1/"
 
 # GOPROXY
-GOPROXY_TEXT="https://proxy.golang.org,https://athens.azurefd.net"
+GOPROXY_TEXT="https://proxy.golang.org"
 
 # Set environmental for golang
-PROFILE="/etc/profile"
+#PROFILE="/etc/profile"
+PROFILE="${HOME}/.bashrc"
 
 # Set GOPATH PATH
-GO_PATH="/data/go"
+#GO_PATH="/data/go"
+GO_PATH="${HOME}/.go/path"
 
 # Is GWF
 IN_CHINA=0
@@ -180,7 +182,8 @@ setEnvironment() {
     profile="${1}"
     if [ -z "`grep 'export\sGOROOT' ${profile}`" ];then
         echo -e "\n## GOLANG" >> $profile
-        echo "export GOROOT=/usr/local/go" >> $profile
+        #echo "export GOROOT=/usr/local/go" >> $profile
+        echo "export GOROOT=${HOME}/.go/go" >> $profile
     fi
 
     if [ -z "`grep 'export\sGOPATH' ${profile}`" ];then
@@ -211,7 +214,9 @@ setEnvironment() {
 
 # Create GOPATH folder
 createGOPATHFolder() {
-    mkdir -p $GO_PATH
+    if [ ! -d $GO_PATH ]; then
+        mkdir -p $GO_PATH
+    fi
 }
 
 # Show copyright
@@ -259,8 +264,8 @@ Usage: %s [-h] [-v version] [-d gopath]
 Options:
   -h            : this help
   -v            : set go version (default: latest version)
-  -d            : set go path (default: /data/go)
-\n" $SCRIPT_NAME
+  -d            : set go path (default: %s/.go/path)
+\n" $SCRIPT_NAME $HOME
 exit 1
 }
 
@@ -269,7 +274,7 @@ initArgs $@
 
 showCopyright
 
-checkRoot
+# checkRoot
 
 checkGWF
 
@@ -293,8 +298,13 @@ DOWNLOAD_FILE="$(mktemp).tar.gz"
 downloadFile $BINARY_URL $DOWNLOAD_FILE
 
 # Tar file and move file
-rm -rf /usr/local/go
-tar -C /usr/local/ -zxf $DOWNLOAD_FILE && \
+if [ ! -d "${HOME}/.go" ]; then
+    mkdir -p ${HOME}/.go
+fi
+#rm -rf /usr/local/go
+#tar -C /usr/local/ -zxf $DOWNLOAD_FILE && \
+rm -rf ${HOME}/.go/go
+tar -C ${HOME}/.go -zxf $DOWNLOAD_FILE && \
 rm -rf $DOWNLOAD_FILE
  
 setEnvironment $PROFILE
