@@ -9,7 +9,7 @@ English | [简体中文](./README_CN.md)
 
 #### Notice
 - You must be **root** to run this script.
-- By default, the latest version of **go version** is installed, and the **GOPATH** directory is ```/data/go```
+- By default, the latest version of **go version** is installed, and the **GOPATH** directory is ```~/.go/path```
 
 ## Installation
 ### Online
@@ -59,7 +59,7 @@ Usage: ./install.sh [-h] [-v version] [-d gopath]
 Options:
   -h            : this help
   -v            : set go version (default: latest version)
-  -d            : set go path (default: /data/go)
+  -d            : set go path (default: ~/.go/path)
 ```
 
 ## Author

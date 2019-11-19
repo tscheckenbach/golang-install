@@ -10,7 +10,7 @@ Go 语言安装
 #### 注意
 - 由于 “raw.githubusercontent.com” 已被墙，故英文版本的地址已失效。
 - 必须在 **root** 用户下执行脚本。
-- 默认安装最新版本的 **go version**, **GOPATH** 目录为 ```/data/go```
+- 默认安装最新版本的 **go version**, **GOPATH** 目录为 ```~/.go/path```
 
 ## 安装
 ### 在线安装
@@ -60,7 +60,7 @@ Usage: ./install.sh [-h] [-v version] [-d gopath]
 Options:
   -h            : this help
   -v            : set go version (default: latest version)
-  -d            : set go path (default: /data/go)
+  -d            : set go path (default: ~/.go/path)
 ```
 
 ## 作者
