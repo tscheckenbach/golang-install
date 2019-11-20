@@ -179,12 +179,7 @@ downloadFile() {
 
 # Set golang environment
 setEnvironment() {
-    profile="${1}"
-    if [ -z "`grep 'export\sGO111MODULE' ${profile}`" ];then
-        if versionGE $RELEASE_TAG "go1.11.1"; then
-        echo "export GO111MODULE=on" >> $profile
-        fi
-    fi     
+    profile="${1}"  
 
     if [ -z "`grep 'export\sGOROOT' ${profile}`" ];then
         echo -e "\n## GOLANG" >> $profile
@@ -200,6 +195,12 @@ setEnvironment() {
         echo "export GOBIN=\$GOPATH/bin" >> $profile
     fi   
 
+    if [ -z "`grep 'export\sGO111MODULE' ${profile}`" ];then
+        if versionGE $RELEASE_TAG "go1.11.1"; then
+            echo "export GO111MODULE=on" >> $profile
+        fi
+    fi       
+
     if [ "${IN_CHINA}" == "1" ]; then 
         if [ -z "`grep 'export\sGOSUMDB' ${profile}`" ];then
             echo "export GOSUMDB=off" >> $profile
@@ -212,7 +213,7 @@ setEnvironment() {
         fi
         echo "export GOPROXY=${GOPROXY_TEXT}" >> $profile
     fi  
-
+    
     if [ -z "`grep '\$GOROOT/bin:\$GOBIN' ${profile}`" ];then
         echo "export PATH=\$GOROOT/bin:\$GOBIN:\$PATH" >> $profile
     fi        
