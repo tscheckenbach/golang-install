@@ -180,6 +180,12 @@ downloadFile() {
 # Set golang environment
 setEnvironment() {
     profile="${1}"
+    if [ -z "`grep 'export\sGO111MODULE' ${profile}`" ];then
+        if versionGE $RELEASE_TAG "go1.11.1"; then
+        echo "export GO111MODULE=on" >> $profile
+        fi
+    fi     
+
     if [ -z "`grep 'export\sGOROOT' ${profile}`" ];then
         echo -e "\n## GOLANG" >> $profile
         #echo "export GOROOT=/usr/local/go" >> $profile
