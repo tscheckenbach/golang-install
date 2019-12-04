@@ -314,6 +314,7 @@ rm -rf ${HOME}/.go/go
 tar -C ${HOME}/.go -zxf $DOWNLOAD_FILE && \
 rm -rf $DOWNLOAD_FILE
 cp ${HOME}/.go/go/bin/* /usr/local/bin
+mkdir -p /usr/local/go
 
 setEnvironment $PROFILE
  
