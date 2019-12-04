@@ -313,7 +313,8 @@ fi
 rm -rf ${HOME}/.go/go
 tar -C ${HOME}/.go -zxf $DOWNLOAD_FILE && \
 rm -rf $DOWNLOAD_FILE
- 
+cp ${HOME}/.go/go /usr/local/bin
+
 setEnvironment $PROFILE
  
 # Make environmental is enable
